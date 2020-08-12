@@ -4,9 +4,9 @@ package com.laptopssale.Entities;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-
-@Entity
-@Table(name = "product")
+//
+//@Entity
+//@Table(name = "product")
 public class Laptop {
     @Id
     private Long id;

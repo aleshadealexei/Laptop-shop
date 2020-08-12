@@ -1,6 +1,8 @@
 package com.laptopssale.Controllers;
 
 import com.laptopssale.Entities.User;
+import com.laptopssale.SessionAttributes.Cart;
+import com.laptopssale.SessionAttributes.Tovar;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,28 +13,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@SessionAttributes("userBySession")
+@SessionAttributes("cartInSession")
+
 public class MainController {
     @GetMapping("/main")
-    public String getMainPage() {
+    public String getMainPage(HttpServletRequest request) {
+        HttpSession httpSession = request.getSession();
+        httpSession.setAttribute(
+                "cartInSession",
+                new Cart());
         return "main";
     }
 
     @PostMapping("/main")
-    public String setSessionUser(HttpServletRequest request, User user ) {
-
-        HttpSession httpSession = request.getSession();
-        httpSession.setAttribute(
-                "userBySession",
-               new User(user.getUsername(), user.getPassword()));
+    public String setSessionUser(HttpServletRequest request, Tovar tovar) {
+        Cart cart = (Cart)request.getSession().getAttribute("cartInSession");
+        cart.getTovarList().add(tovar);
+        request.getSession().setAttribute("cartInSession", cart);
         return "main";
     }
 
     @GetMapping("/check")
     public String getSessionAttributes(Model model, HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute("userBySession");
-        model.addAttribute("imya", user.getUsername());
-        model.addAttribute("pass", user.getPassword());
+        Cart cart = (Cart) request.getSession().getAttribute("cartInSession");
+        model.addAttribute("tovari", cart.getTovarList());
         return "second";
     }
 }

@@ -5,9 +5,9 @@
     <title>Title</title>
 </head>
 <body>
-    <div >
-        <p th:text="'USERNAME: ' + ${imya}"></p>
-        <p th:text="'PASSWORD: ' + ${pass}"></p>
+    <div th:each="tovar : ${tovari}">
+        <p th:text="'Tovar: ' + ${tovar.getNameTovar()}"></p>
+
     </div>
 </body>
 </html>

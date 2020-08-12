@@ -16,12 +16,7 @@ public class Manufacturer {
 
     private boolean processorManufacturer;
 
-
     private boolean laptopManufacturer;
-
-
-
-
 
     public Long getId() {
         return id;

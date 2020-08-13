@@ -1,9 +1,8 @@
 package com.laptopssale.Entities;
 
-import com.laptopssale.SessionAttributes.Cart;
-
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -18,6 +17,10 @@ public class Order {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private Set<Laptop> laptopList;
 
     private Boolean isCompleted;
 

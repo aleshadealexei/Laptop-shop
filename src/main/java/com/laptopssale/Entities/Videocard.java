@@ -16,9 +16,20 @@ public class Videocard {
 
     private String modelName;
 
-    private VideoMemory memoryType;
+    private String memoryType;
 
     private Integer memorySize;
+
+    public Videocard() {
+    }
+
+    public Videocard(Long id, Manufacturer manufacturer, String modelName, String memoryType, Integer memorySize) {
+        this.id = id;
+        this.manufacturer = manufacturer;
+        this.modelName = modelName;
+        this.memoryType = memoryType;
+        this.memorySize = memorySize;
+    }
 
     public Long getId() {
         return id;
@@ -44,11 +55,11 @@ public class Videocard {
         this.modelName = modelName;
     }
 
-    public VideoMemory getMemoryType() {
+    public String getMemoryType() {
         return memoryType;
     }
 
-    public void setMemoryType(VideoMemory memoryType) {
+    public void setMemoryType(String memoryType) {
         this.memoryType = memoryType;
     }
 

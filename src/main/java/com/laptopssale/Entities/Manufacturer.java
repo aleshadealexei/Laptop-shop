@@ -18,6 +18,17 @@ public class Manufacturer {
 
     private boolean laptopManufacturer;
 
+    public Manufacturer() {
+    }
+
+    public Manufacturer(String name, boolean videoManufacturer, boolean processorManufacturer, boolean laptopManufacturer) {
+
+        this.name = name;
+        this.videoManufacturer = videoManufacturer;
+        this.processorManufacturer = processorManufacturer;
+        this.laptopManufacturer = laptopManufacturer;
+    }
+
     public Long getId() { return id;
     }
 

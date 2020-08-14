@@ -9,30 +9,10 @@ import javax.persistence.*;
 @Table(name = "product")
 public class Laptop {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String productName;
-
-    private Double priceToSale;
-
-    @Nullable
-    private String photo;
-
-    private Integer countOnWarehouse;
-
-    private Double priceToBuy;
-
-    private Integer ramCount;
-
-    private Integer romCount;
-
-    private Double lenght;
-
-    private Double width;
-
-    private Double height;
-
-    private Double diagonal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id")
@@ -45,6 +25,59 @@ public class Laptop {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "processor_id")
     private Processor processor;
+
+    private Integer ramCount;
+
+    private Integer romCount;
+
+
+    private Double lenght;
+
+    private Double width;
+
+    private Double height;
+
+    private Double diagonal;
+
+
+    private Integer countOnWarehouse;
+
+    private Double priceToBuy;
+
+    private Double priceToSale;
+
+    public Laptop() {
+    }
+
+    public Laptop(Long id,
+                  String productName,
+                  Manufacturer manufacturer,
+                  Videocard videocard,
+                  Processor processor,
+                  Integer ramCount,
+                  Integer romCount,
+                  Double lenght,
+                  Double width,
+                  Double height,
+                  Double diagonal,
+                  Integer countOnWarehouse,
+                  Double priceToBuy,
+                  Double priceToSale) {
+        this.id = id;
+        this.productName = productName;
+        this.manufacturer = manufacturer;
+        this.videocard = videocard;
+        this.processor = processor;
+        this.ramCount = ramCount;
+        this.romCount = romCount;
+        this.lenght = lenght;
+        this.width = width;
+        this.height = height;
+        this.diagonal = diagonal;
+        this.countOnWarehouse = countOnWarehouse;
+        this.priceToBuy = priceToBuy;
+        this.priceToSale = priceToSale;
+    }
 
     public Long getId() {
         return id;
@@ -68,15 +101,6 @@ public class Laptop {
 
     public void setPriceToSale(Double priceToSale) {
         this.priceToSale = priceToSale;
-    }
-
-    @Nullable
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(@Nullable String photo) {
-        this.photo = photo;
     }
 
     public Integer getCountOnWarehouse() {

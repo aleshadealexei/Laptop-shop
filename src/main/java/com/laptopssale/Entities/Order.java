@@ -11,16 +11,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long orderNumber;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private Set<Laptop> laptopList;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<OrderList> orderList;
 
     private Boolean isCompleted;
 
@@ -28,9 +24,8 @@ public class Order {
 
     }
 
-    public Order(Long orderNumber, User user, Boolean isCompleted) {
-        this.orderNumber = orderNumber;
+    public Order(User user) {
         this.user = user;
-        this.isCompleted = isCompleted;
+        this.isCompleted = false;
     }
 }

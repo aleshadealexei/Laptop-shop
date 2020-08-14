@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Manager Panel</title>
+</head>
+
+<body>
+<script>
+</script>
+
+
+<div th:insert="~{navmenu::${menubar}}"></div>
+
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a class="nav-link" href="/employee/manufacturer">Производители</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/employee/videocard">Видеокарты</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/employee/processor">Процессоры</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/employee/laptop">Ноутбуки</a>
+    </li>
+</ul>
+
+    <div th:if="${#request.getRequestURI() == '/employee/manufacturer'}">
+        <div class="container">
+            <form method="post" th:action="@{/employee/manufacturer}" th:object="${manufacturer}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group col-4">
+                            <label>Производитель: </label> <br>
+                            <input type="text" name="name" class="form-control" required placeholder="Intel"><br>
+                            <label>Чего производит?</label>
+                            <Br>
+                            <label>Видеокарты</label>
+                            <input type="checkbox" name="videoManufacturer" class="form-control">
+                            <br>
+                            <label>Процессоры</label>
+                            <input type="checkbox" name="processorManufacturer" class="form-control">
+                            <br>
+                            <label>Ноутбки</label>
+                            <input type="checkbox" name="laptopManufacturer" class="form-control">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Добавить в базу</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </form>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <th>Id</th>
+                <th>Производитель</th>
+                <th>Видеокарт</th>
+                <th>Процессор</th>
+                <th>Ноутбук</th>
+                </thead>
+                <tr th:each="manufacturer : ${manufacturers}">
+                    <td th:text="${manufacturer.getId()}"></td>
+                    <td th:text="${manufacturer.getName()}"></td>
+                    <td th:text="${manufacturer.isVideoManufacturer() ? '+' : '-'}"></td>
+                    <td th:text="${manufacturer.isProcessorManufacturer() ? '+' : '-'}"></td>
+                    <td th:text="${manufacturer.isLaptopManufacturer()} ? '+' : '-'"></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div th:if="${#request.getRequestURI() == '/employee/videocard'}">
+        <div class="container">
+            <form method="post" th:action="@{/employee/videocard}" th:object="${videocard}">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group col-12">
+                            <label>Модель видеокарты: </label>
+                            <input type="text" name="modelName" class="form-control" required>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group col-12">
+                            <label>Производитель: </label>
+                            <select name="manufacturer" class="form-control" required>
+                                <option th:each="manu : ${manufacturers}" th:text="${manu.getName()}"
+                                        th:value="${manu.getId()}" class="form-control" required></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group col-12">
+                            <label>Тип графической памяти: </label>
+                            <select name="memoryType" class="form-control" required>
+                                <option th:each="type : ${types}" th:text="${type}"
+                                        th:value="${type.toString()}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group col-12">
+                            <label>Количество графической памяти: </label>
+                            <input type="number" name="memorySize" min="2" max="16" placeholder="6" class="form-control"
+                                   required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Добавить в базу</button>
+                </div>
+
+            </form>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <th>Id</th>
+                <th>Производитель</th>
+                <th>Модель</th>
+
+                <th>Тип памяти</th>
+                <th>Количество графической памяти, ГБ</th>
+                </thead>
+                <tr th:each="videocard : ${videocards}">
+                    <td th:text="${videocard.getId()}"></td>
+                    <td th:text="${videocard.getManufacturer().getName()}"></td>
+                    <td th:text="${videocard.getModelName()}"></td>
+                    <td th:text="${videocard.getMemoryType()}"></td>
+                    <td th:text="${videocard.getMemorySize()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div th:if="${#request.getRequestURI() == '/employee/processor'}" class="container">
+        <form method="post" th:action="@{/employee/processor}" th:object="${processor}" class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group col-12">
+                        <label>Модель Процессора: </label>
+                        <input type="text" name="modelName" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group col-12">
+                        <label>Производитель: </label>
+                        <select name="manufacturer" class="form-control" required>
+                            <option th:each="manu : ${manufacturers}" th:text="${manu.getName()}"
+                                    th:value="${manu.getId()}" class="form-control" required></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group col-12">
+                        <label>Частота, ГГц: </label>
+                        <br>
+                        <input type="text" name="rate" class="form-control" required placeholder="2.2"><br>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group col-12">
+                        <label>Количество ядер: </label>
+                        <br>
+                        <input type="number" min="2" max="12" name="numberOfCores" class="form-control" required
+                               placeholder="4"><br>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Добавить в базу</button>
+            </div>
+
+        </form>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <th>Id</th>
+            <th>Производитель</th>
+            <th>Модель</th>
+            <th>Частота, ГГц</th>
+            <th>Количество ядер</th>
+            </thead>
+            <tr th:each="processor : ${processors}">
+                <td th:text="${processor.getId()}"></td>
+                <td th:text="${processor.getManufacturer().getName()}"></td>
+                <td th:text="${processor.getModelName()}"></td>
+                <td th:text="${processor.getRate()}"></td>
+                <td th:text="${processor.getNumberOfCores()}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div th:if="${#request.getRequestURI() == '/employee/laptop'}" class="col-11 container">
+        <form method="post" th:action="@{/employee/laptop}" th:object="${laptop}" class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group ">
+                        <label>Модель: </label>
+                        <input type="text" class="form-control" name="productName" required
+                               placeholder="VivoBook S532XFL">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Производитель: </label>
+                        <br>
+                        <select class="form-control" name="manufacturer" required>
+                            <option th:each="manu : ${manufacturers}" th:text="${manu.getName()}"
+                                    th:value="${manu.getId()}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Видеокарта: </label>
+                        <br>
+                        <select class="form-control" name="videocard" required>
+                            <option th:each="video : ${videocardssa}" th:text="${video.getModelName()}"
+                                    th:value="${video.getId()}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Процессор:</label><br>
+                        <select class="form-control" name="processor" required>
+                            <option th:each="process : ${processors}" th:text="${process.getModelName()}"
+                                    th:value="${process.getId()}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>ОЗУ, ГБ: </label>
+                        <input class="form-control" type="number" name="ramCount" min="2" max="256" step="2" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Энергонезависимая память, ГБ: </label>
+                        <br>
+                        <input class="form-control" type="number" step="any" name="romCount" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Диагональ, ": </label>
+                        <br>
+                        <select class="form-control" name="diagonal" required>
+                            <option>10.0</option>
+                            <option>12.5</option>
+                            <option>13.3</option>
+                            <option>14</option>
+                            <option>15.6</option>
+                            <option>17.3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Длина, мм: </label>
+                        <input class="form-control" type="number" step="any" name="lenght" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Ширина, мм: </label>
+                        <input class="form-control" type="number" step="any" name="width" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Толщина, мм: </label>
+                        <input class="form-control" type="number" step="any" name="height" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Цена закупки, руб: </label>
+                        <input class="form-control" type="number" step="any" name="priceToBuy" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Цена продажи, руб: </label>
+                        <br>
+                        <input class="form-control" type="number" step="any" name="priceToSale" required><br>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group row">
+                    <button type="submit" class="btn btn-primary">Добавить в базу</button>
+                </div>
+            </div>
+
+        </form>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <th>Id</th>
+            <th>Производитель</th>
+            <th>Модель</th>
+            <th>Видеокарта</th>
+            <th>Процессор</th>
+            <th>ОЗУ, ГБ</th>
+            <th>Энергонезависимая память, ГБ</th>
+            <th>Диагональ</th>
+            <th>Длина</th>
+            <th>Ширина</th>
+            <th>Толщина</th>
+            <th>Цена закупки</th>
+            <th>Цена продажи</th>
+            <th>Количество на складе</th>
+            </thead>
+            <tr th:each="laptop : ${laptops}">
+                <td th:text="${laptop.getId()}"></td>
+                <td th:text="${laptop.getManufacturer().getName()}"></td>
+                <td th:text="${laptop.getProductName()}"></td>
+                <td th:text="${laptop.getVideocard().getModelName()}"></td>
+                <td th:text="${laptop.getProcessor().getModelName()}"></td>
+                <td th:text="${laptop.getRamCount()}"></td>
+                <td th:text="${laptop.getRomCount()}"></td>
+                <td th:text="${laptop.getDiagonal()}"></td>
+                <td th:text="${laptop.getLenght()}"></td>
+                <td th:text="${laptop.getHeight()}"></td>
+                <td th:text="${laptop.getWidth()}"></td>
+                <td th:text="${laptop.getPriceToBuy()}"></td>
+                <td th:text="${laptop.getPriceToSale()}"></td>
+                <td th:text="${laptop.getCountOnWarehouse()}"></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+
+</body>
+</html>

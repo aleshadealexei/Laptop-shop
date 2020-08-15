@@ -1,5 +1,7 @@
 package com.laptopssale.Entities;
 
+import org.hibernate.tuple.GeneratedValueGeneration;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -25,7 +27,42 @@ public class Order {
     }
 
     public Order(User user) {
+
         this.user = user;
         this.isCompleted = false;
+    }
+
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderList> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<OrderList> orderList) {
+        this.orderList = orderList;
+    }
+
+    public Boolean getCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
     }
 }

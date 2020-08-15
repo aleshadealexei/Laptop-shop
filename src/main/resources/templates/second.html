@@ -2,23 +2,46 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Корзина</title>
 </head>
 <body>
 <nav>
     <div th:insert="~{navmenu::${menubar}}" ></div>
 
 </nav>
-<div class="card" th:each="processor : ${tovari}">
 
-        <p th:name="${id}" th:text="${processor.getId()}"></p>
-        <p th:name="${manufacturer}" th:value="${processor.getManufacturer().getId()}"></p>
-        <p th:name="${modelName}" th:value="${processor.getModelName()}"></p>
-        <p th:name="${rate}" th:value="${processor.getRate()}"></p>
-        <p th:name="${numberOfCores}" th:value="${processor.getNumberOfCores()}"></p>
-
+<div class="container">
 
 </div>
+<table class="table table-striped container">
+    <thead class="thead-dark">
+    <th>Товар</th>
+    <th>Количество</th>
+    <th>Действия</th>
+    </thead>
+    <form method="post" action="/make-order">
+        <input type="text" th:value="${${#authentication.getPrincipal().getId()} ? #authentication.getPrincipal().getId() : 8}">
+    </form>
+    <tr th:each="laptop : ${tovari}">
+
+            <td th:text="${laptop.key.getProductName()}">
+
+
+            <td th:text="${laptop.value}">
+
+            </td>
+        <td>
+            <a><button class="btn btn-primary">+1</button></a>
+            <a><button class="btn btn-primary">-1</button></a>
+        </td>
+
+    </tr>
+
+    <tr>
+        <th>Cумма: </th>
+        <th th:text="${summa}"></th>
+    </tr>
+
 </table>
 </body>
 </html>

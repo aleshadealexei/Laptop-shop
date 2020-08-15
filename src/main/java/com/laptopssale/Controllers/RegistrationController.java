@@ -25,8 +25,10 @@ public class RegistrationController {
 
     @PostMapping
     public String addNewUser(User user) {
+        if (userRepo.findByUsername(user.getUsername()) == null) {
+            userService.addUser(user);
+        }
 
-        userService.addUser(user);
         return "redirect:/main";
     }
     @GetMapping("/{code}")

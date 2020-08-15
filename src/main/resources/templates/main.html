@@ -15,14 +15,59 @@
         <div th:insert="~{navmenu::${menubar}}" ></div>
 
     </nav>
+    <br>
 
-        <div class="card" th:each="processor : ${processors}">
-            <form method="post">
-                <input type="hidden" name="id" th:text="${processor.getId()}" th:value="${processor.getId()}">
-                <input type="submit" placeholder="Add To Cart" class="btn btn-primary">
-            </form>
+    <nav aria-label="Page navigation example" class="container">
+        <ul class="pagination">
+            <li class="page-item" th:if="${page.hasPrevious()}">
+                <a class="page-link" th:href="@{/main(page=${page.number-1},size=3)}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li th:each="i: ${#numbers.sequence(0, page.totalPages - 1)}" class="page-item" th:classappend="${page.number == i} ? ' active'">
+                <span th:if="${page.number == i}" class="page-link active">
+                        [[${i}+1]]
+                </span>
+
+                <span th:unless="${page.number == i}">
+                 <a class="page-link" th:href="@{/main(page=${i},size=2)}">[[${i}+1]]</a>
+            </span>
+            </li>
+            <li class="page-item" th:if="${page.hasNext()}">
+                <a class="page-link" th:href="@{/main(page=${page.number+1},size=2)}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="card container" th:each="laptop : ${page.content}">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${laptop.getDiagonal()+ ' '+ laptop.getManufacturer().getName() + ' '
+                + laptop.getProductName()}"></h5>
+            <p class="card-text"
+               th:text="${
+               laptop.getProcessor().getManufacturer().getName() + ' '
+               + laptop.getProcessor().getModelName() + ' '
+               + laptop.getProcessor().getRate()}">
+            </p>
+            <p class="card-text"
+               th:text="${
+               laptop.getVideocard().getManufacturer().getName() + ' '
+               + laptop.getVideocard().getModelName() + ' '
+               + laptop.getVideocard().getModelName() + ' '
+               + laptop.getVideocard().getMemoryType() + ' '
+               + laptop.getVideocard().getMemorySize() + ' GB'}">
+            </p>
+            <a th:href="@{'/laptop/' + ${laptop.getId()}}" class="btn btn-primary">Подробнее...</a>
+            <a th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-danger">В корзину</a>
         </div>
+        <br>
+    </div>
 
+
+    </table>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

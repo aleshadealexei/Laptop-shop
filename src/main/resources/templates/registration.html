@@ -6,9 +6,19 @@
 </head>
 <body>
     <form action="/registration" method="post">
-        <label>Имя пользователя: </label><input type="text" placeholder="username" name="username">
+        <label>Имя пользователя: </label><input type="text" placeholder="username" name="username" required>
         <br><br>
-        <label>Пароль </label><input type="password" placeholder="password" name="password">
+        <label>Имя: </label><input type="password" placeholder="password" name="name" required>
+        <br><br>
+        <label>Фамилия: </label><input type="password" placeholder="password" name="surname" required>
+        <br><br>
+        <label>Отчество: </label><input type="text" placeholder="username" name="otchestvo" required>
+        <br><br>
+        <label>Электронная почта:</label><input type="email" placeholder="password" name="email" required>
+        <br><br>
+        <label>Страна:</label><input type="text" placeholder="password" name="country" required>
+        <br><br>
+        <label>Город:</label><input type="text" placeholder="password" name="town" required>
         <br><br>
         <button type="submit">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
     </form>

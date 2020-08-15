@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.UUID;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,6 +28,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void addUser(User user) throws NullPointerException {
+        user.setActivationCode(UUID.randomUUID().toString());
         user.setRoles(Collections.singleton(Roles.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 

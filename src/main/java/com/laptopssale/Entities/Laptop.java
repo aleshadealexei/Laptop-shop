@@ -79,6 +79,12 @@ public class Laptop {
         this.priceToSale = priceToSale;
     }
 
+    public Laptop(Long id, String productName, Manufacturer manufacturer) {
+        this.id = id;
+        this.productName = productName;
+        this.manufacturer = manufacturer;
+    }
+
     public Long getId() {
         return id;
     }

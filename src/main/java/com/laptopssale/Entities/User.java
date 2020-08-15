@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return activationCode == null;
     }
 
     @Id
@@ -64,8 +64,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Roles> roles;
 
-
-
+    private String activationCode;
     public User() {
     }
 
@@ -84,6 +83,14 @@ public class User implements UserDetails {
         this.country = country;
         this.town = town;
         this.orders = orders;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activation_code) {
+        this.activationCode = activation_code;
     }
 
     public String getName() {

@@ -5,9 +5,20 @@
     <title>Title</title>
 </head>
 <body>
-    <div th:each="tovar : ${tovari}">
-        <p th:text="'Tovar: ' + ${tovar.getNameTovar()}"></p>
+<nav>
+    <div th:insert="~{navmenu::${menubar}}" ></div>
 
-    </div>
+</nav>
+<div class="card" th:each="processor : ${tovari}">
+
+        <p th:name="${id}" th:text="${processor.getId()}"></p>
+        <p th:name="${manufacturer}" th:value="${processor.getManufacturer().getId()}"></p>
+        <p th:name="${modelName}" th:value="${processor.getModelName()}"></p>
+        <p th:name="${rate}" th:value="${processor.getRate()}"></p>
+        <p th:name="${numberOfCores}" th:value="${processor.getNumberOfCores()}"></p>
+
+
+</div>
+</table>
 </body>
 </html>

@@ -14,7 +14,8 @@
 
 <div th:insert="~{navmenu::${menubar}}"></div>
 
-<ul class="nav justify-content-center">
+<br>
+<ul class="nav justify-content-center bg-dark">
     <li class="nav-item">
         <a class="nav-link" href="/employee/manufacturer">Производители</a>
     </li>
@@ -28,7 +29,7 @@
         <a class="nav-link" href="/employee/laptop">Ноутбуки</a>
     </li>
 </ul>
-
+<br><br>
     <div th:if="${#request.getRequestURI() == '/employee/manufacturer'}">
         <div class="container">
             <form method="post" th:action="@{/employee/manufacturer}" th:object="${manufacturer}">
@@ -70,11 +71,11 @@
                 <th>Ноутбук</th>
                 </thead>
                 <tr th:each="manufacturer : ${manufacturers}">
-                    <td th:text="${manufacturer.getId()}"></td>
-                    <td th:text="${manufacturer.getName()}"></td>
-                    <td th:text="${manufacturer.isVideoManufacturer() ? '+' : '-'}"></td>
-                    <td th:text="${manufacturer.isProcessorManufacturer() ? '+' : '-'}"></td>
-                    <td th:text="${manufacturer.isLaptopManufacturer()} ? '+' : '-'"></td>
+                        <td th:text="${manufacturer.getId()}"></td>
+                        <td th:text="${manufacturer.getName()}"></td>
+                        <td th:text="${manufacturer.isVideoManufacturer() ? '+' : '-'}"></td>
+                        <td th:text="${manufacturer.isProcessorManufacturer() ? '+' : '-'}"></td>
+                        <td th:text="${manufacturer.isLaptopManufacturer()} ? '+' : '-'"></td>
                 </tr>
             </table>
         </div>
@@ -201,7 +202,6 @@
             </tr>
         </table>
     </div>
-
     <div th:if="${#request.getRequestURI() == '/employee/laptop'}" class="col-11 container">
         <form method="post" th:action="@{/employee/laptop}" th:object="${laptop}" class="container">
             <div class="row">
@@ -315,45 +315,63 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="container">
+                <button type="submit" class="btn btn-primary">Добавить в базу</button>
+            </div>
+            <div class="row ">
                 <div class="form-group row">
-                    <button type="submit" class="btn btn-primary">Добавить в базу</button>
+
                 </div>
             </div>
 
         </form>
         <table class="table table-striped">
             <thead class="thead-dark">
-            <th>Id</th>
-            <th>Производитель</th>
-            <th>Модель</th>
-            <th>Видеокарта</th>
-            <th>Процессор</th>
-            <th>ОЗУ, ГБ</th>
-            <th>Энергонезависимая память, ГБ</th>
-            <th>Диагональ</th>
-            <th>Длина</th>
-            <th>Ширина</th>
-            <th>Толщина</th>
-            <th>Цена закупки</th>
-            <th>Цена продажи</th>
-            <th>Количество на складе</th>
+                <th>Id</th>
+                <th>Производитель</th>
+                <th>Модель</th>
+                <th>Видеокарта</th>
+                <th>Процессор</th>
+                <th>ОЗУ, ГБ</th>
+                <th>Энергонезависимая память, ГБ</th>
+                <th>Диагональ</th>
+                <th>Длина</th>
+                <th>Ширина</th>
+                <th>Толщина</th>
+                <th>Цена закупки</th>
+                <th>Цена продажи</th>
+                <th>Количество на складе</th>
+                <th>Add</th>
+                <th>Del</th>
             </thead>
             <tr th:each="laptop : ${laptops}">
-                <td th:text="${laptop.getId()}"></td>
-                <td th:text="${laptop.getManufacturer().getName()}"></td>
-                <td th:text="${laptop.getProductName()}"></td>
-                <td th:text="${laptop.getVideocard().getModelName()}"></td>
-                <td th:text="${laptop.getProcessor().getModelName()}"></td>
-                <td th:text="${laptop.getRamCount()}"></td>
-                <td th:text="${laptop.getRomCount()}"></td>
-                <td th:text="${laptop.getDiagonal()}"></td>
-                <td th:text="${laptop.getLenght()}"></td>
-                <td th:text="${laptop.getHeight()}"></td>
-                <td th:text="${laptop.getWidth()}"></td>
-                <td th:text="${laptop.getPriceToBuy()}"></td>
-                <td th:text="${laptop.getPriceToSale()}"></td>
-                <td th:text="${laptop.getCountOnWarehouse()}"></td>
+                <form method="post" th:action="@{/employee/laptop1}" th:object="${laptop1}" class="container">
+                    <input type="hidden" name="id" th:value="${laptop.getId()}"/>
+
+                    <td th:text="${laptop.getId()}">
+                        <input type="hidden" name="id" th:value="${laptop.getId()}">
+                    </td>
+                    <td th:text="${laptop.getManufacturer().getName()}">
+                        <input type="hidden" name="manufacturer" th:value="${laptop.getManufacturer().getId()}">
+                    </td>
+                    <td th:text="${laptop.getProductName()}">
+                        <input type="hidden" name="productName" th:value="${laptop.getProductName()}">
+                    </td>
+                    <td th:text="${laptop.getVideocard().getModelName()}"></td>
+                    <td th:text="${laptop.getProcessor().getManufacturer().getName() + ' ' + laptop.getProcessor().getModelName()}"></td>
+                    <td th:text="${laptop.getRamCount()}"></td>
+                    <td th:text="${laptop.getRomCount()}"></td>
+                    <td th:text="${laptop.getDiagonal()}"></td>
+                    <td th:text="${laptop.getLenght()}"></td>
+                    <td th:text="${laptop.getWidth()}"></td>
+                    <td th:text="${laptop.getHeight()}"></td>
+                    <td th:text="${laptop.getPriceToBuy()}"></td>
+                    <td th:text="${laptop.getPriceToSale()}"></td>
+                    <td th:text="${laptop.getCountOnWarehouse()}"></td>
+                    <td><button type="submit" class="btn btn-primary" name="knopka" value="+1">+1</button></td>
+                    <td><button type="submit" class="btn btn-danger" name="knopka" value="-1">-1</button></td>
+                </form>
+
             </tr>
         </table>
     </div>

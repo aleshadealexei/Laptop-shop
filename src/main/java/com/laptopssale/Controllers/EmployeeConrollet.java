@@ -8,10 +8,7 @@ import com.laptopssale.Repositories.VideocardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -52,7 +49,7 @@ public class EmployeeConrollet {
                 model.addAttribute("manufacturers", manufacturerRepo.findAllByLaptopManufacturer(true));
                 model.addAttribute("videocardssa", videocardRepo.findAll());
                 model.addAttribute("processors", processorRepo.findAll());
-                model.addAttribute("laptops", laptopRepo.findAll());
+                model.addAttribute("laptops", laptopRepo.findAllByOrderByIdDesc());
                 break;
         }
         return "addtovartodb";
@@ -64,6 +61,8 @@ public class EmployeeConrollet {
                           Videocard videocard,
                           Processor processor,
                           Laptop laptop,
+                          Laptop laptop1,
+                          @RequestParam(name = "knopka", required = false) String knopka,
                           Model model) {
 
         switch (type) {
@@ -77,7 +76,6 @@ public class EmployeeConrollet {
                 processorRepo.save(processor);
                 break;
             case "laptop":
-
                 if (laptopRepo.findByProductNameAndManufacturerId(laptop.getProductName(), laptop.getManufacturer().getId()) != null) {
                     laptop = laptopRepo.findByProductNameAndManufacturerId(laptop.getProductName(), laptop.getManufacturer().getId());
                     laptop.setCountOnWarehouse(laptop.getCountOnWarehouse() + 1);
@@ -85,6 +83,21 @@ public class EmployeeConrollet {
                     laptop.setCountOnWarehouse(1);
                 }
                 laptopRepo.save(laptop);
+                break;
+            case "laptop1":
+                System.out.println(laptop.getProductName());
+                laptop = laptopRepo.findById(laptop.getId()).get();
+                System.out.println(laptop.getProductName());
+                if (knopka.equals("+1") && laptop.getCountOnWarehouse() > 0) {
+                    laptop.setCountOnWarehouse(laptop.getCountOnWarehouse() + 1);
+                } else if (laptop.getCountOnWarehouse() > 0)
+                {
+                    laptop.setCountOnWarehouse(laptop.getCountOnWarehouse() - 1);
+                } else if (laptop.getCountOnWarehouse() == 0){
+                    laptopRepo.delete(laptop);
+                }
+                laptopRepo.save(laptop);
+                type = "laptop";
                 break;
         }
         return "redirect:/employee/" + type;

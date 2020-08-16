@@ -75,9 +75,21 @@ public class OrderController extends Cart {
     @GetMapping("/list")
     public String getOrderList1(Model model) {
         List<Order> orders = orderRepo.findAll();
-
+        Boolean allOnWarehouse = true;
+        for (Order order
+                : orders) {
+            order.setAllInWarehouse(true);
+            for (OrderList orderList:
+                 order.getOrderList()) {
+                allOnWarehouse = orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount();
+                if (!allOnWarehouse) {
+                    System.out.println("НЕ ВСЕ НА СКЛАДЕЕ, ААА");
+                    order.setAllInWarehouse(false);
+                    break;
+                }
+            }
+        }
         model.addAttribute("orders", orders);
-
 
         return "orderlist";
     }

@@ -25,6 +25,9 @@ public class Order {
 
     private Double sum;
 
+    @Transient
+    private Boolean allInWarehouse;
+
     public Order() {
 
     }
@@ -37,6 +40,14 @@ public class Order {
 
     public Double getSum() {
         return sum;
+    }
+
+    public Boolean getAllInWarehouse() {
+        return allInWarehouse;
+    }
+
+    public void setAllInWarehouse(Boolean allInWarehouse) {
+        this.allInWarehouse = allInWarehouse;
     }
 
     public void setSum(Double sum) {

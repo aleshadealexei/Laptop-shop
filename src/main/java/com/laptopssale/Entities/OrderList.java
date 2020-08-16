@@ -18,6 +18,8 @@ public class OrderList {
     @JoinColumn(name = "laptop_id")
     private Laptop laptop;
 
+
+
     private Integer count;
 
     public OrderList() {
@@ -29,6 +31,8 @@ public class OrderList {
         this.laptop = laptop;
         this.count = count;
     }
+
+
 
     private Boolean isOnWarehouse;
 

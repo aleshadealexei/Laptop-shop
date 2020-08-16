@@ -23,13 +23,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/laptop/**", "/check").authenticated()
+                .authorizeRequests().antMatchers("/laptop/**", "/check", "/profile/**").authenticated()
                 .anyRequest().permitAll()
         .and()
                 .formLogin()
                 .permitAll()
         .and()
                 .logout()
+                .logoutSuccessUrl("/main")
                 .permitAll()
         .and()
                 .rememberMe()
@@ -40,6 +41,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService)
                 .passwordEncoder(passwordEncoder);
-        System.out.println("AAAAAAAAAAAA");
     }
 }

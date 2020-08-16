@@ -67,6 +67,7 @@ public class MainController extends Cart {
         if (cart == null) {
             cart = new Cart();
         }
+
         model.addAttribute("summa", cart.getSum());
         model.addAttribute("tovari", cart.getTovarList());
         return "second";

@@ -14,7 +14,7 @@
 
 </div>
 <form method="post" action="/order/make-order">
-    <input type="text" th:value="${#authentication.principal.id}">
+    <input type="hidden" th:value="${#authentication.principal.id}">
 <table class="table table-striped container">
     <thead class="thead-dark">
     <th>Товар</th>
@@ -43,7 +43,7 @@
                 <th>Cумма: </th>
                 <th th:text="${summa}"></th>
             </tr>
-        <button type="submit" class="btn btn-primary">Заказать</button>
+        <button th:if="${userCart.getSum() != 0}" type="submit" class="btn btn-primary">Заказать</button>
 
 </table>
 </form>

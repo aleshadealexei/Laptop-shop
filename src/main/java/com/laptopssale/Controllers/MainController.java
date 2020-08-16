@@ -35,11 +35,12 @@ public class MainController extends Cart {
 
     @GetMapping("/main")
     public String getMainPage(HttpSession session,
+                              //@ModelAttribute(name = "userCart") Cart cart,
                               @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 2) Pageable pageable,
                               Model model) {
-        session.setAttribute(
-                "userCart",
-                getTovarList());
+
+            session.setAttribute("userCart", new Cart());
+
         Page<Laptop> laptopPage = laptopRepo.findAll(pageable);
         model.addAttribute("page", laptopPage);
         model.addAttribute("laptops", laptopRepo.findAll());
@@ -48,23 +49,26 @@ public class MainController extends Cart {
 
     @GetMapping("/laptop/add-to-cart/{id}")
     public String addLaptopToCart(HttpSession session, @PathVariable Laptop id, Model model) {
-
-        if (hasOnCart(id)) {
+        Cart cart =(Cart) session.getAttribute("userCart");
+        if (cart.hasOnCart(id)) {
         } else {
             System.out.println("Не содержит");
-            getTovarList().put(id, 1);
+            cart.getTovarList().put(id, 1);
         }
-        setSum(getSum() + id.getPriceToSale());
+        cart.setSum(cart.getSum() + id.getPriceToSale());
         //System.out.println("Отправлен пост");
         model.addAttribute("laptops", laptopRepo.findAll());
-        session.setAttribute("userCart", getTovarList());
+        session.setAttribute("userCart", cart);
         return "redirect:/main";
     }
 
     @GetMapping("/check")
-    public String checkCart(Model model, HttpSession session) {
-        model.addAttribute("summa", getSum());
-        model.addAttribute("tovari", getTovarList());
+    public String checkCart(Model model, HttpSession session, @ModelAttribute("userCart") Cart cart) {
+        if (cart == null) {
+            cart = new Cart();
+        }
+        model.addAttribute("summa", cart.getSum());
+        model.addAttribute("tovari", cart.getTovarList());
         return "second";
     }
 }

@@ -18,9 +18,12 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
     private List<OrderList> orderList;
 
     private Boolean isCompleted;
+
+    private Double sum;
 
     public Order() {
 
@@ -32,7 +35,13 @@ public class Order {
         this.isCompleted = false;
     }
 
+    public Double getSum() {
+        return sum;
+    }
 
+    public void setSum(Double sum) {
+        this.sum = sum;
+    }
 
     public Long getId() {
         return id;
@@ -54,7 +63,7 @@ public class Order {
         return orderList;
     }
 
-    public void setOrderList(List<OrderList> orderList) {
+    public void setOrderList(List<OrderList>  orderList) {
         this.orderList = orderList;
     }
 

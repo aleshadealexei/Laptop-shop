@@ -8,12 +8,16 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @SessionAttributes("userCart")
 public class Cart {
+    private Map<Laptop, Integer> tovarList;
+    private Double sum;
 
-    protected Map<Laptop, Integer> getTovarList() {
+
+    public Map<Laptop, Integer> getTovarList() {
         return tovarList;
     }
 
@@ -21,10 +25,10 @@ public class Cart {
         this.tovarList = tovarList;
     }
 
-    private Map<Laptop, Integer> tovarList;
-    private Double sum;
+
 
     public Cart() {
+
         tovarList = new HashMap<>();
         this.sum = (double) 0;
     }
@@ -47,5 +51,9 @@ public class Cart {
 
         }
         return false;
+    }
+
+    public void deleteCart(HttpSession session) {
+        session.removeAttribute("userCart");
     }
 }

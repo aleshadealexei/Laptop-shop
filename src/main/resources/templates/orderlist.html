@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Orderlist</title>
+</head>
+<body>
+    <div th:each="order : ${orders}">
+        <div th:each="orderList : ${order.getOrderList()}">
+            <p th:text="${'IdZakaza: ' + orderList.getOrder().getId()}"></p>
+            <p th:text="${'Ноутбук: ' + orderList.getLaptop().getProductName()}"> </p>
+            <p th:text="${'Количество: ' + orderList.getCount()}"> </p>
+        </div>
+
+
+    </div>
+</body>
+</html>

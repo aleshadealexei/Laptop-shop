@@ -37,9 +37,9 @@
                 <th>Статус</th>
 
                 </thead>
-                <tr th:each="order : ${user.getOrders()}">
-                    <td th:text="${order.getId()}"></td>
-                    <td th:text="${order.getUser().getName()}"></td>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.getId() }"></td>
+                    <td th:text="${order.getUser().getUsername() }"></td>
                     <td th:text="${order.getCompleted() ? 'Завершен' : 'Обрабатывается'}"></td>
                 </tr>
             </table>

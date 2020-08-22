@@ -92,7 +92,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.example.sweater.Application</mainClass>
+							<mainClass>com.laptopssale.RunApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

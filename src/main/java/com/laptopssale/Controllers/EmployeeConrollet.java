@@ -3,6 +3,7 @@ package com.laptopssale.Controllers;
 import com.laptopssale.Entities.*;
 import com.laptopssale.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

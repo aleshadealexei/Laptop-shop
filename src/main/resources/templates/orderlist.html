@@ -11,24 +11,7 @@
 
 </nav>
 <br>
-    <div th:each="order : ${orders}" class="card container">
-        <p th:text="${'IdZakaza: ' + order.getId()}"></p>
-        <div th:each="orderList : ${order.getOrderList()}" >
-                <div class="card-body">
 
-                    <p th:text="${'Ноутбук: ' + orderList.getLaptop().getProductName()}"> </p>
-                    <p th:text="${'Количество: ' + orderList.getCount()}"> </p>
-                    <p th:if="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Есть на складе</p>
-                    <p th:unless="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Нет на складе</p>
-                </div>
-                <p></p>
-            </div>
-
-        <a href="/order/complete" th:if="${order.getAllInWarehouse()}">
-            <button type="submit" class="btn btn-primary">Выполнить</button>
-        </a>
-        <br>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

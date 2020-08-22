@@ -1,15 +1,13 @@
 package com.laptopssale.Controllers;
 
 import com.laptopssale.Entities.*;
-import com.laptopssale.Repositories.LaptopRepo;
-import com.laptopssale.Repositories.ManufacturerRepo;
-import com.laptopssale.Repositories.ProcessorRepo;
-import com.laptopssale.Repositories.VideocardRepo;
+import com.laptopssale.Repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -24,7 +22,8 @@ public class EmployeeConrollet {
     ProcessorRepo processorRepo;
     @Autowired
     LaptopRepo laptopRepo;
-
+    @Autowired
+    OrderRepo orderRepo;
     @GetMapping
     public String getAddForm() {
         return "addtovartodb";
@@ -55,13 +54,14 @@ public class EmployeeConrollet {
         return "addtovartodb";
     }
 
+
+
     @PostMapping("/{word}")
     public String addToDb(@PathVariable(name = "word") String type,
                           Manufacturer manufacturer,
                           Videocard videocard,
                           Processor processor,
                           Laptop laptop,
-                          Laptop laptop1,
                           @RequestParam(name = "knopka", required = false) String knopka,
                           Model model) {
 
@@ -85,21 +85,51 @@ public class EmployeeConrollet {
                 laptopRepo.save(laptop);
                 break;
             case "laptop1":
-                System.out.println(laptop.getProductName());
                 laptop = laptopRepo.findById(laptop.getId()).get();
-                System.out.println(laptop.getProductName());
-                if (knopka.equals("+1") && laptop.getCountOnWarehouse() > 0) {
+                if (knopka.equals("+1") && laptop.getCountOnWarehouse() >= 0) {
                     laptop.setCountOnWarehouse(laptop.getCountOnWarehouse() + 1);
                 } else if (laptop.getCountOnWarehouse() > 0)
                 {
                     laptop.setCountOnWarehouse(laptop.getCountOnWarehouse() - 1);
-                } else if (laptop.getCountOnWarehouse() == 0){
-                    laptopRepo.delete(laptop);
                 }
                 laptopRepo.save(laptop);
                 type = "laptop";
                 break;
         }
         return "redirect:/employee/" + type;
+    }
+
+    @GetMapping("/order/list")
+    public String getOrderList1(Model model) {
+        List<Order> orders = orderRepo.findAllByIsCompleted(false);
+        Boolean allOnWarehouse = true;
+        for (Order order
+                : orders) {
+            order.setAllInWarehouse(true);
+            for (OrderList orderList:
+                    order.getOrderList()) {
+                allOnWarehouse = orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount();
+                if (!allOnWarehouse) {
+                    order.setAllInWarehouse(false);
+                    break;
+                }
+            }
+        }
+        model.addAttribute("orders", orders);
+
+        return "addtovartodb";
+    }
+
+    @GetMapping("/order/list/complete/{id}")
+    public String completeOrder(@PathVariable Order id, Model model) {
+        List<Laptop> laptopList;
+        for(OrderList orderList : id.getOrderList()) {
+            orderList.getLaptop().setCountOnWarehouse(
+                    orderList.getLaptop().getCountOnWarehouse() - orderList.getCount());
+            laptopRepo.save(orderList.getLaptop());
+        }
+        id.setCompleted(true);
+        orderRepo.save(id);
+        return "redirect:/employee";
     }
 }

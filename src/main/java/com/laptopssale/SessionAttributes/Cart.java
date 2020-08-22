@@ -26,9 +26,13 @@ public class Cart {
     }
 
 
-
     public Cart() {
+        tovarList = new HashMap<>();
+        this.sum = (double) 0;
+    }
 
+    public Cart(HttpSession session) {
+        session.setAttribute("userCart", this);
         tovarList = new HashMap<>();
         this.sum = (double) 0;
     }
@@ -44,8 +48,23 @@ public class Cart {
     public boolean hasOnCart(Laptop laptop) {
 
         for (Laptop key: tovarList.keySet()) {
-            if (key.getId().equals(laptop.getId())) {
+            if (key.getId() == laptop.getId()) {
                 tovarList.replace(key, tovarList.get(key) + 1);
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    public boolean hasOnCart(Laptop laptop, int i) {
+
+        for (Laptop key: tovarList.keySet()) {
+            if (key.getId() == laptop.getId()) {
+                tovarList.replace(key, tovarList.get(key) - 1);
+                if (tovarList.get(key) == 0) {
+                    tovarList.remove(key);
+                }
                 return true;
             }
 

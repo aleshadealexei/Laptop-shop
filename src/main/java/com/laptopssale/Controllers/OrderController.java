@@ -34,9 +34,10 @@ public class OrderController extends Cart {
 
     @Autowired
     OrderRepo orderRepo;
+
     @GetMapping("/{number}")
-    public String redirectCart(@AuthenticationPrincipal User user) throws NullPointerException {
-        System.out.println(user.getUsername());
+    public String redirectCart(@AuthenticationPrincipal User user, @PathVariable Order number, Model model) throws NullPointerException {
+        model.addAttribute("orders", number);
         return "redirect:/check";
     }
     @PostMapping("/make-order")
@@ -46,19 +47,20 @@ public class OrderController extends Cart {
                            SessionStatus sessionStatus,
                            HttpSession session) {
         Order order = new Order(user);
+        order.setSum(cart.getSum());
         orderRepo.save(order);
-
+        System.out.println("Я потерялся :С");
         Order finalorder = orderRepo.findById(order.getId()).get();
         cart.getTovarList().forEach((k,v) ->
         {
             OrderList orderList = new OrderList();
             orderList.setLaptop(k);
-            System.out.println(k.getProductName());
+
             orderList.setCount(v);
-            System.out.println(v);
+
             orderList.setOnWarehouse(v > 0);
             orderList.setOrder(order);
-            System.out.println(order.getId());
+
             orderListRepo.save(orderList);
 
         });
@@ -66,32 +68,10 @@ public class OrderController extends Cart {
         session.removeAttribute("userCart");
         System.out.println(cart.getTovarList().size());
         sessionStatus.setComplete();
-
         session.removeAttribute("userCart");
-
         return "redirect:/main";
     }
 
-    @GetMapping("/list")
-    public String getOrderList1(Model model) {
-        List<Order> orders = orderRepo.findAll();
-        Boolean allOnWarehouse = true;
-        for (Order order
-                : orders) {
-            order.setAllInWarehouse(true);
-            for (OrderList orderList:
-                 order.getOrderList()) {
-                allOnWarehouse = orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount();
-                if (!allOnWarehouse) {
-                    System.out.println("НЕ ВСЕ НА СКЛАДЕЕ, ААА");
-                    order.setAllInWarehouse(false);
-                    break;
-                }
-            }
-        }
-        model.addAttribute("orders", orders);
 
-        return "orderlist";
-    }
 
 }

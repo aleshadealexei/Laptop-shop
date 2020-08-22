@@ -1,9 +1,6 @@
 package com.laptopssale.Controllers;
 
 import com.laptopssale.Entities.Laptop;
-import com.laptopssale.Entities.Order;
-import com.laptopssale.Entities.Processor;
-import com.laptopssale.Entities.User;
 import com.laptopssale.Repositories.LaptopRepo;
 import com.laptopssale.Repositories.ProcessorRepo;
 import com.laptopssale.SessionAttributes.Cart;
@@ -12,10 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 
@@ -35,11 +33,13 @@ public class MainController extends Cart {
 
     @GetMapping("/main")
     public String getMainPage(HttpSession session,
-                              //@ModelAttribute(name = "userCart") Cart cart,
+
                               @PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC, size = 2) Pageable pageable,
                               Model model) {
 
-            session.setAttribute("userCart", new Cart());
+        if (session.getAttribute("userCart") == null)
+            session.setAttribute("userCart", new Cart(session));
+
 
         Page<Laptop> laptopPage = laptopRepo.findAll(pageable);
         model.addAttribute("page", laptopPage);
@@ -49,8 +49,15 @@ public class MainController extends Cart {
 
     @GetMapping("/laptop/add-to-cart/{id}")
     public String addLaptopToCart(HttpSession session, @PathVariable Laptop id, Model model) {
-        Cart cart =(Cart) session.getAttribute("userCart");
+        Cart cart;
+        if (session.getAttribute("userCart") == null)
+            session.setAttribute("userCart", new Cart(session));
+        cart = (Cart) session.getAttribute("userCart");
         if (cart.hasOnCart(id)) {
+            System.out.println("Содержит");
+            cart.setSum(cart.getSum() + id.getPriceToSale());
+            session.setAttribute("userCart", cart);
+            return "redirect:/check";
         } else {
             System.out.println("Не содержит");
             cart.getTovarList().put(id, 1);
@@ -62,14 +69,37 @@ public class MainController extends Cart {
         return "redirect:/main";
     }
 
+    @GetMapping("/laptop/del-from-cart/{id}")
+    public String delLaptopFromCart(HttpSession session, @PathVariable Laptop id, Model model) {
+        Cart cart;
+        if (session.getAttribute("userCart") == null) {
+            session.setAttribute("userCart", new Cart());
+            cart = new Cart();
+        }
+        else  {
+            cart = (Cart) session.getAttribute("userCart");
+        }
+        if (cart.hasOnCart(id, 1)) {
+            System.out.println("Содержит");
+            cart.setSum(cart.getSum() - id.getPriceToSale());
+            session.setAttribute("userCart", cart);
+
+        }
+
+        model.addAttribute("laptops", laptopRepo.findAll());
+        session.setAttribute("userCart", cart);
+        return "redirect:/check";
+    }
+
     @GetMapping("/check")
     public String checkCart(Model model, HttpSession session, @ModelAttribute("userCart") Cart cart) {
-        if (cart == null) {
-            cart = new Cart();
+        if (cart.getSum() == null) {
+            session.setAttribute("userCart", new Cart());
         }
 
         model.addAttribute("summa", cart.getSum());
         model.addAttribute("tovari", cart.getTovarList());
         return "second";
     }
+
 }

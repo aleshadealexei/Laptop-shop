@@ -8,4 +8,5 @@ import java.util.List;
 public interface OrderRepo extends JpaRepository<Order, Long> {
     List<Order> findAll();
     List<Order> findAllByUserId(Long id);
+    List<Order> findAllByIsCompleted(boolean bool);
 }

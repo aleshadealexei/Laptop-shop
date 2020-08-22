@@ -28,6 +28,9 @@
     <li class="nav-item">
         <a class="nav-link" href="/employee/laptop">Ноутбуки</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/employee/order/list">Список заказов</a>
+    </li>
 </ul>
 <br><br>
     <div th:if="${#request.getRequestURI() == '/employee/manufacturer'}">
@@ -375,7 +378,28 @@
             </tr>
         </table>
     </div>
+    <div th:if="${#request.getRequestURI() == '/employee/order/list'}">
+        <div th:each="order : ${orders}" class="card container">
+            <p th:text="${'IdZakaza: ' + order.getId()}"></p>
+            <div th:each="orderList : ${order.getOrderList()}" >
+                <div class="card-body">
+                    <p th:text="${'Ноутбук: ' + orderList.getLaptop().getProductName()}"> </p>
+                    <p th:text="${'Количество: ' + orderList.getCount()}"> </p>
+                    <p th:if="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Есть на складе</p>
+                    <p th:unless="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Нет на складе</p>
+                </div>
+                <p></p>
+            </div>
 
+            <a th:href="${'/employee/order/list/complete/' + order.getId()}" th:if="${order.getAllInWarehouse()}">
+                <span type="submit" class="btn btn-primary">Выполнить</span>
+            </a>
+            <a th:unless="${order.getAllInWarehouse()}">
+                <span class="btn btn-primary">Заказать </span>
+            </a>
+            <br>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
             integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

@@ -38,10 +38,18 @@
 
                 </thead>
                 <tr th:each="order : ${orders}">
-                    <td th:text="${order.getId() }"></td>
+                    <td><a th:text="${order.getId() }" th:href="@{'/order/' + ${order.getId()}}"></a>
+                        <span> <br/>Состав: </span>
+                        <span th:each="ol : ${order.getOrderList()}">
+                            <br>
+                            <span th:text="''+ ${ol.getLaptop().getProductName() + ' ' + ol.getCount()}" ><br></span>
+                        </span>
                     <td th:text="${order.getUser().getUsername() }"></td>
                     <td th:text="${order.getCompleted() ? 'Завершен' : 'Обрабатывается'}"></td>
+
                 </tr>
+
+
             </table>
         </div>
     </div>

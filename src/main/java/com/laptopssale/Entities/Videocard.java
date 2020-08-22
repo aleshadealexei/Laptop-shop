@@ -1,6 +1,5 @@
 package com.laptopssale.Entities;
 
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
 @Entity

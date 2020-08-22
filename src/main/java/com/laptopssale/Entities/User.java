@@ -33,7 +33,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return activationCode == null;
+        return true;
     }
 
     @Id

@@ -1,28 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
-</head>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <body>
-    <form action="/registration" method="post">
-        <label>Имя пользователя: </label><input type="text" placeholder="username" name="username" required>
-        <br><br>
-        <label>Пароль: </label><input type="text" placeholder="password" name="password" required>
-        <br><br>
-        <label>Имя: </label><input type="text" placeholder="password" name="name" required>
-        <br><br>
-        <label>Фамилия: </label><input type="text" placeholder="password" name="surname" required>
-        <br><br>
-        <label>Отчество: </label><input type="text" placeholder="username" name="otchestvo" required>
-        <br><br>
-        <label>Электронная почта:</label><input type="email" placeholder="password" name="email" required>
-        <br><br>
-        <label>Страна:</label><input type="text" placeholder="password" name="country" required>
-        <br><br>
-        <label>Город:</label><input type="text" placeholder="password" name="town" required>
-        <br><br>
-        <button type="submit">ЗАРЕГЕСТРИРОВАТЬСЯ</button>
-    </form>
+<div id="login">
+    <h3 class="text-center text-white pt-5">Login form</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="login-form" class="form" action="/registration" method="post">
+                        <h3 class="text-center text-info">Registration</h3>
+                        <div class="form-group">
+                            <label for="username" class="text-info">Username:</label><br>
+                            <input type="text" name="username" id="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="text-info">Password:</label><br>
+                            <input type="text" name="password" id="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Имя: </label><input type="text" placeholder="Имя" name="name" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Фамилия: </label><input type="text" placeholder="Фамилия" name="surname" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Отчество: </label><input type="text" placeholder="Отчество" name="otchestvo" required  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Электронная почта:</label><input type="email" placeholder="sample@mail.com" name="email" required
+                                                                    class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Страна:</label><input type="text" placeholder="Россия" name="country" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Город:</label><input type="text" placeholder="Москва" name="town" required class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" class="btn btn-info btn-md" value="Зарегестрироваться">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

@@ -15,7 +15,10 @@
 
                 <ul class="nav">
                     <li class="nav-item col-2">
-                        <a class="nav-link active" href="/login">Логин</a>
+                        <a class="nav-link active" href="/login" th:if="${#authorization.getAuthentication().getName().equals('anonymousUser')}">Логин</a>
+                    </li>
+                    <li class="nav-item col-2" th:unless="${#authorization.getAuthentication().getName().equals('anonymousUser')}">
+                        <a class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id}}">Личный кабинет</a>
                     </li>
                     <li class="nav-item col-2">
                         <a class="nav-link " href="/main">Каталог</a>
@@ -23,9 +26,7 @@
                     <li class="nav-item col-2">
                         <a class="nav-link "  href="/check" th:text="'Корзина '"></a>
                     </li>
-                    <li class="nav-item col-2" th:if="!${#authorization.getAuthentication().getName().equals('anonymousUser')}">
-                        <a class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id}}">Личный кабинет</a>
-                    </li>
+
                     <li class="nav-item col-2"th:each="role : ${#authentication.authorities }" th:if="${role.toString().equals('ADMIN')}">
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Админ панель</a>
                     </li>

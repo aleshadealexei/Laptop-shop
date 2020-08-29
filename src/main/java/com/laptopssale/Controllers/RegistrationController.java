@@ -31,14 +31,15 @@ public class RegistrationController {
 
         return "redirect:/main";
     }
+
     @GetMapping("/{code}")
-    public String getLogin(@PathVariable String code, HttpSession session) {
+    public String getLogin(@PathVariable String code) {
         User user = userRepo.findByActivationCode(code);
         if (user != null) {
             user.setActivationCode(null);
-
+            user.setActivated(true);
             userRepo.save(user);
         }
-        return "redirect:/main";
+        return "redirect:/login";
     }
 }

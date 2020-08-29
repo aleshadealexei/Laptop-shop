@@ -1,6 +1,7 @@
 package com.laptopssale.Entities;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -33,7 +34,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActivated();
     }
 
     @Id
@@ -56,6 +57,7 @@ public class User implements UserDetails {
 
     private String town;
 
+    private boolean activated;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Order> orders;
 
@@ -71,6 +73,7 @@ public class User implements UserDetails {
     public User(String username, String passwrod) {
         this.username = username;
         this.password = passwrod;
+        activated = false;
     }
 
     public User(String username, String password, String name, String surname, String otchestvo, String email, String country, String town, List<Order> orders) {
@@ -83,6 +86,7 @@ public class User implements UserDetails {
         this.country = country;
         this.town = town;
         this.orders = orders;
+        activated = false;
     }
 
     public String getActivationCode() {
@@ -179,5 +183,13 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Roles> roles) {
         this.roles = roles;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }

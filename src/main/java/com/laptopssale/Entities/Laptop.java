@@ -46,6 +46,10 @@ public class Laptop {
 
     private Double priceToSale;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User userFav;
+
     public Laptop() {
     }
 
@@ -79,6 +83,14 @@ public class Laptop {
         this.priceToSale = priceToSale;
     }
 
+    public User getUserFav() {
+        return userFav;
+    }
+
+    public void setUserFav(User userFav) {
+        this.userFav = userFav;
+    }
+
     public Laptop(Long id, String productName, Manufacturer manufacturer) {
         this.id = id;
         this.productName = productName;
@@ -99,6 +111,15 @@ public class Laptop {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public String getFullProductName() {
+        return processor.getManufacturer().getName() + " "
+                + processor.getModelName() + " "
+                + manufacturer.getName() + " "
+                + productName + " "
+                + ramCount + "GB RAM///"
+                + romCount + "GB ROM";
     }
 
     public Double getPriceToSale() {

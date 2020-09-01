@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class MainController extends Cart {
+public class MainController  {
     @Autowired
     private ProcessorRepo processorRepo;
 
@@ -33,8 +33,6 @@ public class MainController extends Cart {
     @GetMapping
     public String redirectCatalog() {
         return "redirect:/main";
-
-
     }
 
     @GetMapping("/main")
@@ -58,7 +56,9 @@ public class MainController extends Cart {
                                   HttpSession session,
                                   @PathVariable Laptop id,
                                   Model model) {
-
+        if (id.getCountOnWarehouse() <= 0) {
+            return "redirect:/main";
+        }
         Cart cart;
         if (session.getAttribute("userCart") == null)
             session.setAttribute("userCart", new Cart(session));

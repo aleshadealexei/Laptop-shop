@@ -16,7 +16,7 @@ import java.util.Optional;
 @Controller
 //@PreAuthorize("EMPLOYEE")
 @RequestMapping("/employee")
-public class EmployeeConrollet {
+public class EmployeeConroller {
     @Autowired
     private EmployeeService employeeService;
     @Autowired

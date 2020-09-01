@@ -60,8 +60,8 @@
                + laptop.getVideocard().getMemoryType() + ' '
                + laptop.getVideocard().getMemorySize() + ' GB'}">
             </p>
-            <a th:href="@{'/laptop/' + ${laptop.getId()}}" class="btn btn-primary">Подробнее...</a>
-            <a th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-danger">В корзину</a>
+            <a th:href="@{'/product/' + ${laptop.getId()}}" class="btn btn-primary">Подробнее...</a>
+            <a th:if="${laptop.getCountOnWarehouse() > 0}" th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-danger">В корзину</a>
         </div>
         <br>
     </div>

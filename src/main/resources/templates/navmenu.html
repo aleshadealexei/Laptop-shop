@@ -33,7 +33,6 @@
                     </li>
                     <li class="nav-item col-2">
                         <a class="nav-link "  href="/check" th:text="${'Корзина ' + #httpSession.getAttribute('userCart').getCount()}"></a>
-
                     </li>
 
                     <li class="nav-item col-2"th:each="role : ${#authentication.authorities }" th:if="${role.toString().equals('ADMIN')}">

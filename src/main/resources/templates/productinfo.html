@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${laptop.getFullProductName()}"></title>
+</head>
+<body>
+<nav>
+    <div th:insert="~{navmenu::${menubar}}" ></div>
+
+    <div class="card container">
+        <div class="card-body">
+            <h4 class="card-title"th:text="${laptop.getDiagonal() + ' '+ laptop.getFullProductName()}"></h4>
+            <h5 class="container">Размеры</h5>
+            <p th:text="${'Диагональ: ' + laptop.getDiagonal()}"></p>
+            <p th:text="${'Длина: ' + laptop.getLenght()}"></p>
+            <p th:text="${'Ширина: ' + laptop.getWidth()}"></p>
+
+            <h5 class="container">Процессор</h5>
+            <p th:text="${'Производитель:' + laptop.getProcessor().getManufacturer().getName()}"></p>
+            <p th:text="${'Модель: ' + ' ' + laptop.getProcessor().getModelName()}"></p>
+            <p th:text="${'Количество ядер: ' + laptop.getProcessor().getNumberOfCores()}"></p>
+            <p th:text="${'Тактовая частота: ' + laptop.getProcessor().getRate() +  ' ГГц'}"></p>
+
+            <h5 class="container">Видеокарта:</h5>
+            <p th:text="${'Производитель:' + laptop.getVideocard().getManufacturer().getName()}"></p>
+            <p th:text="${'Модель: ' + laptop.getVideocard().getModelName()}"></p>
+            <p th:text="${'Тип видеопамяти:' + laptop.getVideocard().getMemoryType()}"></p>
+            <p th:text="${'Количество видеопамяти: ' + laptop.getVideocard().getMemorySize()}"></p>
+
+            <h5 class="container">Количство на складе</h5>
+            <p th:text="${laptop.getCountOnWarehouse() > 0 ? laptop.getCountOnWarehouse() : 'Нет в наличии'}"></p>
+
+
+            <a th:href="@{'/product/' + ${laptop.getId()}}" class="btn">♥</a>
+            <a th:if="${laptop.getCountOnWarehouse() > 0}" th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-primary">В корзину</a>
+        </div>
+        <br>
+    </div>
+
+</nav>
+</body>
+</html>

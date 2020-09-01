@@ -18,7 +18,6 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-
     private List<OrderList> orderList;
 
     private Boolean isCompleted;
@@ -27,6 +26,7 @@ public class Order {
 
     @Transient
     private Boolean allInWarehouse;
+
 
     public Order() {
 

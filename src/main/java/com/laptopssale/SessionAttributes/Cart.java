@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
-@SessionAttributes("userCart")
 public class Cart {
     private Map<Laptop, Integer> tovarList;
     private Double sum;

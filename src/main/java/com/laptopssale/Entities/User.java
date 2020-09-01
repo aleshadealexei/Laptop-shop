@@ -71,7 +71,8 @@ public class User implements UserDetails {
     public User() {
     }
 
-
+    @OneToMany(mappedBy = "userFav", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Laptop> laptops;
 
     public User(String username, String passwrod) {
         this.username = username;
@@ -195,5 +196,13 @@ public class User implements UserDetails {
 
     public void setActivated(boolean activated) {
         this.activated = activated;
+    }
+
+    public Set<Laptop> getLaptops() {
+        return laptops;
+    }
+
+    public void setLaptops(Set<Laptop> laptops) {
+        this.laptops = laptops;
     }
 }

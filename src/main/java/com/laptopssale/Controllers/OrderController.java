@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/order")
-public class OrderController extends Cart {
+public class OrderController  {
     @Autowired
     private OrderService orderService;
 

@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
     private void sendMessage(User user) {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format("Hello, %s! \n" +
-                            "Welcome to LaptopShop. Please, visit next link: %s",
+                            "Welcome to LaptopShop. Please, visit next link: <a href=%s>Here</a>",
                     user.getUsername(),
                     domain + "/registration/" + user.getActivationCode());
             mailSender.send(user.getEmail(), "Activation code", message);
@@ -61,6 +61,26 @@ public class UserService implements UserDetailsService {
             return userRepo.findByUsername(s);
     }
 
+    public void changeProfile(User user, User userEdit) throws NullPointerException {
+        user.setName(userEdit.getName());
+        user.setSurname(userEdit.getSurname());
+        user.setOtchestvo(userEdit.getOtchestvo());
+        user.setCountry(userEdit.getCountry());
+        user.setTown(userEdit.getTown());
+
+
+        if (!user.getEmail().equals(userEdit.getEmail())) {
+            user.setActivationCode(UUID.randomUUID().toString());
+            user.setEmail(userEdit.getEmail());
+            user.setActivated(false);
+            sendMessage(user);
+        }
+        if (!passwordEncoder.encode(user.getPassword()).equals(passwordEncoder.encode(userEdit.getPassword())) && !userEdit.getPassword().isEmpty())  {
+            user.setPassword(passwordEncoder.encode(userEdit.getPassword()));
+        }
+        userRepo.save(user);
+
+    }
 
 
 

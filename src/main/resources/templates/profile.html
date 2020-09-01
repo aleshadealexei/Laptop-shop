@@ -25,6 +25,9 @@
 
     <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id}">
         <p th:text="${'Логин: ' + user.getUsername()}"></p>
+        <p th:text="${'ФИО: ' + user.getName() + ' ' + user.getSurname() + ' ' + user.getOtchestvo()}"></p>
+        <p th:text="${'Количество заказов: ' + user.getOrders().size()}"></p>
+        <p th:text="${'Адрес доставки: ' + user.getCountry() + ', ' + user.getTown()}"></p>
     </div>
 
     <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id + '/orders'}">
@@ -55,7 +58,51 @@
     </div>
 
     <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id + '/settings'}">
+        <h5>Изменить данные</h5>
+        <form method="post" th:action="@{'/profile/' + ${ user.getId()} + '/settings'}" class="col-md-2" >
+            <div class="form-group">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <h6>Личные данные</h6>
+                <input type="hidden" name="id" th:value="${user.getId()}">
+                <input type="hidden" name="username" th:value="${user.getUsername()}">
+                <div class="form-group">
+                    <placeholder>Имя: </placeholder>
+                    <input type="text" name="name" placeholder="Введите новое имя" th:value="${user.getName()}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <placeholder>Фамилия: </placeholder>
+                    <input type="text" name="surname" placeholder="Введите новую фамилию" th:value="${user.getSurname()}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <placeholder>Отчество: </placeholder>
+                    <input type="text" name="otchestvo" placeholder="Введите новое отчество" th:value="${user.getOtchestvo()}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <placeholder>Email: </placeholder>
+                    <input type="email" name="email" placeholder="example@mail.com" th:value="${user.getEmail()}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <placeholder>Password: </placeholder>
+                    <input type="password" name="password" placeholder="Password"  class="form-control">
+                </div>
+            </div>
 
+            <div class="form-group">
+                <h6>Адрес доставки</h6>
+                <div class="form-group">
+                    <placeholder>Страна: </placeholder>
+                    <input type="text" name="country" placeholder="Введите новое имя" th:value="${user.getCountry()}" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <placeholder>Город: </placeholder>
+                    <input type="text" name="town" placeholder="Введите новую фамилию" th:value="${user.getTown()}" class="form-control" required>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Изменить</button>
+            </div>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

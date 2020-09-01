@@ -36,6 +36,7 @@
     <div th:if="${#request.getRequestURI() == '/employee/manufacturer'}">
         <div class="container">
             <form method="post" th:action="@{/employee/manufacturer}" th:object="${manufacturer}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="row">
                     <div class="col">
                         <div class="form-group col-4">
@@ -87,6 +88,7 @@
     <div th:if="${#request.getRequestURI() == '/employee/videocard'}">
         <div class="container">
             <form method="post" th:action="@{/employee/videocard}" th:object="${videocard}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="row">
                     <div class="col">
                         <div class="form-group col-12">
@@ -149,6 +151,7 @@
     </div>
     <div th:if="${#request.getRequestURI() == '/employee/processor'}" class="container">
         <form method="post" th:action="@{/employee/processor}" th:object="${processor}" class="container">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="row">
                 <div class="col">
                     <div class="form-group col-12">
@@ -207,6 +210,7 @@
     </div>
     <div th:if="${#request.getRequestURI() == '/employee/laptop'}" class="col-11 container">
         <form method="post" th:action="@{/employee/laptop}" th:object="${laptop}" class="container">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="row">
                 <div class="col">
                     <div class="form-group ">
@@ -349,6 +353,7 @@
             </thead>
             <tr th:each="laptop : ${laptops}">
                 <form method="post" th:action="@{/employee/laptop1}" th:object="${laptop1}" class="container">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <input type="hidden" name="id" th:value="${laptop.getId()}"/>
 
                     <td th:text="${laptop.getId()}">
@@ -386,7 +391,11 @@
                     <p th:text="${'Ноутбук: ' + orderList.getLaptop().getProductName()}"> </p>
                     <p th:text="${'Количество: ' + orderList.getCount()}"> </p>
                     <p th:if="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Есть на складе</p>
-                    <p th:unless="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">Нет на складе</p>
+                    <div th:unless="${orderList.getLaptop().getCountOnWarehouse() >= orderList.getCount()}">
+                        <p>Нет на складе</p>
+                        <p th:text="'Не хватает: ' + ${orderList.getCount() - orderList.getLaptop().getCountOnWarehouse()  }"></p>                        </p>
+                    </div>
+
                 </div>
                 <p></p>
             </div>

@@ -67,14 +67,18 @@ public class User implements UserDetails {
     private Set<Roles> roles;
 
     private String activationCode;
+
     public User() {
     }
+
+
 
     public User(String username, String passwrod) {
         this.username = username;
         this.password = passwrod;
         activated = false;
     }
+
 
     public User(String username, String password, String name, String surname, String otchestvo, String email, String country, String town, List<Order> orders) {
         this.username = username;

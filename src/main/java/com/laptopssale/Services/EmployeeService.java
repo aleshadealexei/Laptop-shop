@@ -44,7 +44,12 @@ public class EmployeeService {
         }
     }
 
-    public void saveToDatabase(@PathVariable(name = "word") String type, Manufacturer manufacturer, Videocard videocard, Processor processor, Laptop laptop, @RequestParam(name = "knopka", required = false) String knopka) {
+    public void saveToDatabase(@PathVariable(name = "word") String type,
+                               Manufacturer manufacturer,
+                               Videocard videocard,
+                               Processor processor,
+                               Laptop laptop,
+                               @RequestParam(name = "knopka", required = false) String knopka) {
         switch (type) {
             case "manufacturer":
                 manufacturerRepo.save(manufacturer);
@@ -67,17 +72,20 @@ public class EmployeeService {
                 laptopRepo.save(laptop);
                 break;
             case "laptop1":
+
                 laptop = laptopRepo.findById(laptop.getId()).get();
                 if (knopka.equals("+1") && laptop.getCountOnWarehouse() >= 0) {
-                    laptop
-                            .setCountOnWarehouse(laptop.getCountOnWarehouse() + 1);
-                } else if (laptop.getCountOnWarehouse() > 0)
-                {
-                    laptop
-                            .setCountOnWarehouse(laptop.getCountOnWarehouse() - 1);
-                }
+                        laptop
+                                .setCountOnWarehouse(laptop.getCountOnWarehouse() + 1);
+                    }
+                else
+                    if (laptop.getCountOnWarehouse() > 0) {
+                        laptop
+                                .setCountOnWarehouse(laptop.getCountOnWarehouse() - 1);
+                    }
+
                 laptopRepo.save(laptop);
-                type = "laptop";
+
                 break;
         }
     }

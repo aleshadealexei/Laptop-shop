@@ -43,8 +43,10 @@ public class EmployeeConrollet {
                           Laptop laptop,
                           @RequestParam(name = "knopka", required = false) String knopka,
                           Model model) {
-
         employeeService.saveToDatabase(type, manufacturer, videocard, processor, laptop, knopka);
+        if (type.equals("laptop1")) {
+            type = "laptop";
+        }
         return "redirect:/employee/" + type;
     }
 

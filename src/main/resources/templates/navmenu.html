@@ -14,6 +14,11 @@
             <div class="bg-dark p-4">
 
                 <ul class="nav">
+                    <li th:if="!${#authorization.getAuthentication().getName().equals('anonymousUser')}">
+                        <form method="post" th:action="@{/logout}">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
+                        </form>
+                    </li>
                     <li class="nav-item col-2">
                         <a class="nav-link active" href="/login" th:if="${#authorization.getAuthentication().getName().equals('anonymousUser')}">Логин</a>
                     </li>

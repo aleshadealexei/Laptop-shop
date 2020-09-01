@@ -27,6 +27,7 @@ public class Cart {
 
 
     public Cart() {
+
         tovarList = new HashMap<>();
         this.sum = (double) 0;
     }
@@ -72,7 +73,11 @@ public class Cart {
         return false;
     }
 
-    public void deleteCart(HttpSession session) {
-        session.removeAttribute("userCart");
+    public int getCount() {
+        int count = 0;
+        for (Map.Entry<Laptop, Integer> entry : tovarList.entrySet()) {
+            count += entry.getValue();
+        }
+        return count;
     }
 }

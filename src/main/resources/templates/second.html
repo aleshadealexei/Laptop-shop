@@ -22,7 +22,7 @@
         <th>Количество</th>
         <th>Действия</th>
         </thead>
-        <tr th:each="laptop : ${tovari}" th:name="tovarListing" th:value="${tovari}">
+        <tr th:each="laptop : ${cart.getTovarList()}" th:name="tovarListing" >
             <td th:text="${laptop.key.getProductName()}">
             <td th:text="${laptop.value}">
             </td>
@@ -39,11 +39,16 @@
         </tr>
         <tr>
             <th>Cумма:</th>
-            <th th:text="${summa}"></th>
+            <th th:text="${cart.getSum()}"></th>
         </tr>
-        <button th:if="${userCart.getSum() != 0}" type="submit" class="btn btn-primary">Заказать</button>
+
 
     </table>
+    <div class="container">
+        <button th:if="${cart.getSum() != 0}" type="submit" name="knopka" class="btn btn-primary" value="submit">Заказать</button>
+        <button th:if="${cart.getSum() != 0}" type="submit" name="knopka" class="btn btn-danger" value="deleteall">Очистить</button>
+    </div>
+
 </form>
 </body>
 </html>

@@ -15,21 +15,25 @@
 
                 <ul class="nav">
                     <li th:if="!${#authorization.getAuthentication().getName().equals('anonymousUser')}">
+
+
                         <form method="post" th:action="@{/logout}">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Log Out</button>
+                            <a th:unless="${#authorization.getAuthentication().getName().equals('anonymousUser')}" class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id}}">Личный кабинет</a>
+
                         </form>
+
                     </li>
                     <li class="nav-item col-2">
                         <a class="nav-link active" href="/login" th:if="${#authorization.getAuthentication().getName().equals('anonymousUser')}">Логин</a>
                     </li>
-                    <li class="nav-item col-2" th:unless="${#authorization.getAuthentication().getName().equals('anonymousUser')}">
-                        <a class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id}}">Личный кабинет</a>
-                    </li>
+
                     <li class="nav-item col-2">
                         <a class="nav-link " href="/main">Каталог</a>
                     </li>
                     <li class="nav-item col-2">
-                        <a class="nav-link "  href="/check" th:text="'Корзина '"></a>
+                        <a class="nav-link "  href="/check" th:text="${'Корзина ' + #httpSession.getAttribute('userCart').getCount()}"></a>
+
                     </li>
 
                     <li class="nav-item col-2"th:each="role : ${#authentication.authorities }" th:if="${role.toString().equals('ADMIN')}">

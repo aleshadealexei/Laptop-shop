@@ -9,12 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -29,6 +33,8 @@ public class MainController extends Cart {
     @GetMapping
     public String redirectCatalog() {
         return "redirect:/main";
+
+
     }
 
     @GetMapping("/main")
@@ -40,7 +46,7 @@ public class MainController extends Cart {
         if (session.getAttribute("userCart") == null)
             session.setAttribute("userCart", new Cart(session));
 
-
+        session.setAttribute("whereRedirect", "main");
         Page<Laptop> laptopPage = laptopRepo.findAll(pageable);
         model.addAttribute("page", laptopPage);
         model.addAttribute("laptops", laptopRepo.findAll());
@@ -48,24 +54,24 @@ public class MainController extends Cart {
     }
 
     @GetMapping("/laptop/add-to-cart/{id}")
-    public String addLaptopToCart(HttpSession session, @PathVariable Laptop id, Model model) {
+    public String addLaptopToCart(HttpServletRequest httpRequest,
+                                  HttpSession session,
+                                  @PathVariable Laptop id,
+                                  Model model) {
+
         Cart cart;
         if (session.getAttribute("userCart") == null)
             session.setAttribute("userCart", new Cart(session));
         cart = (Cart) session.getAttribute("userCart");
-        if (cart.hasOnCart(id)) {
-            System.out.println("Содержит");
-            cart.setSum(cart.getSum() + id.getPriceToSale());
-            session.setAttribute("userCart", cart);
-            return "redirect:/check";
-        } else {
-            System.out.println("Не содержит");
+        if (!cart.hasOnCart(id)) {
             cart.getTovarList().put(id, 1);
         }
         cart.setSum(cart.getSum() + id.getPriceToSale());
-        //System.out.println("Отправлен пост");
         model.addAttribute("laptops", laptopRepo.findAll());
         session.setAttribute("userCart", cart);
+        if (session.getAttribute("whereRedirect").equals("check")) {
+            return "redirect:/check";
+        }
         return "redirect:/main";
     }
 
@@ -75,8 +81,7 @@ public class MainController extends Cart {
         if (session.getAttribute("userCart") == null) {
             session.setAttribute("userCart", new Cart());
             cart = new Cart();
-        }
-        else  {
+        } else {
             cart = (Cart) session.getAttribute("userCart");
         }
         if (cart.hasOnCart(id, 1)) {
@@ -88,17 +93,17 @@ public class MainController extends Cart {
 
         model.addAttribute("laptops", laptopRepo.findAll());
         session.setAttribute("userCart", cart);
+
         return "redirect:/check";
     }
 
     @GetMapping("/check")
-    public String checkCart(Model model, HttpSession session, @ModelAttribute("userCart") Cart cart) {
-        if (cart.getSum() == null) {
-            session.setAttribute("userCart", new Cart());
-        }
-
-        model.addAttribute("summa", cart.getSum());
-        model.addAttribute("tovari", cart.getTovarList());
+    public String checkCart(Model model, HttpSession session) {
+        session.setAttribute("whereRedirect", "check");
+        if (session.getAttribute("userCart") == null)
+            session.setAttribute("userCart", new Cart(session));
+        Cart cart = (Cart) session.getAttribute("userCart");
+        model.addAttribute("cart", cart);
         return "second";
     }
 

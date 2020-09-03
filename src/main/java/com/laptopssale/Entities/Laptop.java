@@ -46,9 +46,7 @@ public class Laptop {
 
     private Double priceToSale;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User userFav;
+
 
     public Laptop() {
     }
@@ -81,14 +79,6 @@ public class Laptop {
         this.countOnWarehouse = countOnWarehouse;
         this.priceToBuy = priceToBuy;
         this.priceToSale = priceToSale;
-    }
-
-    public User getUserFav() {
-        return userFav;
-    }
-
-    public void setUserFav(User userFav) {
-        this.userFav = userFav;
     }
 
     public Laptop(Long id, String productName, Manufacturer manufacturer) {

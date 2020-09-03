@@ -1,5 +1,6 @@
 package com.laptopssale.Controllers;
 
+import com.laptopssale.Entities.Laptop;
 import com.laptopssale.Entities.Order;
 import com.laptopssale.Entities.User;
 import com.laptopssale.Repositories.UserRepo;
@@ -37,12 +38,18 @@ public class ProfileController {
                                  @PathVariable String mode,
                                  Model model
                                  ) {
+        model.addAttribute("user", user);
         if (mode.equals("settings")) {
             model.addAttribute("user", user);
         }
         if (mode.equals("orders")) {
             List<Order> orders = orderService.findAllUserOrders(user);
             model.addAttribute("orders", orders);
+        }
+        if (mode.equals("fav")) {
+            for (Laptop l : user.getLaptops()) {
+                System.out.println(l.getId());
+            }
         }
         return "profile";
     }

@@ -15,25 +15,74 @@
             <p th:text="${'Диагональ: ' + laptop.getDiagonal()}"></p>
             <p th:text="${'Длина: ' + laptop.getLenght()}"></p>
             <p th:text="${'Ширина: ' + laptop.getWidth()}"></p>
-
+            <hr>
             <h5 class="container">Процессор</h5>
             <p th:text="${'Производитель:' + laptop.getProcessor().getManufacturer().getName()}"></p>
             <p th:text="${'Модель: ' + ' ' + laptop.getProcessor().getModelName()}"></p>
             <p th:text="${'Количество ядер: ' + laptop.getProcessor().getNumberOfCores()}"></p>
             <p th:text="${'Тактовая частота: ' + laptop.getProcessor().getRate() +  ' ГГц'}"></p>
-
+            <hr>
             <h5 class="container">Видеокарта:</h5>
             <p th:text="${'Производитель:' + laptop.getVideocard().getManufacturer().getName()}"></p>
             <p th:text="${'Модель: ' + laptop.getVideocard().getModelName()}"></p>
             <p th:text="${'Тип видеопамяти:' + laptop.getVideocard().getMemoryType()}"></p>
             <p th:text="${'Количество видеопамяти: ' + laptop.getVideocard().getMemorySize()}"></p>
-
             <h5 class="container">Количство на складе</h5>
             <p th:text="${laptop.getCountOnWarehouse() > 0 ? laptop.getCountOnWarehouse() : 'Нет в наличии'}"></p>
+            <hr>
 
-
-            <a th:href="@{'/product/' + ${laptop.getId()}}" class="btn">♥</a>
+            <a th:href="@{'/product/' + ${laptop.getId()} + '/fav'}" class="btn">♥</a>
             <a th:if="${laptop.getCountOnWarehouse() > 0}" th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-primary">В корзину</a>
+            <hr>
+            <div class="card container" th:if="${#authentication.getName() != 'anonymousUser'}">
+                <div class="card-title">
+                    <h3>Оставьте отзыв: </h3>
+                </div>
+                <form method="post" th:object="${feedback}">
+                    <div class="card-body">
+                        <input type="hidden" name="laptop" th:value="${laptop.getId()}">
+                        <input type="hidden" name="user" th:value="${#authorization.authentication.principal.id}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <h6>Достоинства:</h6>
+                        <textarea placeholder="Введите достоинства аппарата..." name="pluses"></textarea>
+                        <br>
+                        <h6>Недостатки:</h6>
+                        <textarea placeholder="Введите достоинства аппарата..." name="minuses"></textarea>
+                        <br>
+                        <select name="rate">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <br>
+
+                    </div>
+                    <div class="card body">
+                        <button type="submit" class="btn btn-primary">Записать</button>
+                    </div>
+                </form>
+            </div>
+            <hr>
+            <h5>Отзывы: </h5>
+
+            <div class="card" th:each="feedback : ${feedbacks}">
+                <div class="card">
+                    <div class="card-title">
+                        <h6 th:text="${feedback.getUser().getUsername()}"></h6>
+                        <p th:text="${'Оценка: ' + feedback.getRate()}"></p>
+                    </div>
+                    <hr>
+                    <div class="card-body">
+                        <h6> Достоинства:</h6>
+                        <p th:text="${feedback.getPluses()}"></p>
+                        <hr>
+                        <h6>Недостатки: </h6>
+                        <p th:text="${feedback.getMinuses()}"></p>
+                    </div>
+                </div>
+            </div>
         </div>
         <br>
     </div>

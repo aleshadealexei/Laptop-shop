@@ -104,7 +104,38 @@
             </div>
         </form>
     </div>
+    <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id + '/favlist'}">
+        <h5>Избранное: </h5>
+        <div class="card container" th:each="laptop : ${user.getLaptops()}">
+            <div class="card-body" >
+                <h4 class="card-title"th:text="${laptop.getDiagonal() + ' '+ laptop.getFullProductName()}"></h4>
+                <h5 class="container">Размеры</h5>
+                <p th:text="${'Диагональ: ' + laptop.getDiagonal()}"></p>
+                <p th:text="${'Длина: ' + laptop.getLenght()}"></p>
+                <p th:text="${'Ширина: ' + laptop.getWidth()}"></p>
 
+                <h5 class="container">Процессор</h5>
+                <p th:text="${'Производитель:' + laptop.getProcessor().getManufacturer().getName()}"></p>
+                <p th:text="${'Модель: ' + ' ' + laptop.getProcessor().getModelName()}"></p>
+                <p th:text="${'Количество ядер: ' + laptop.getProcessor().getNumberOfCores()}"></p>
+                <p th:text="${'Тактовая частота: ' + laptop.getProcessor().getRate() +  ' ГГц'}"></p>
+
+                <h5 class="container">Видеокарта:</h5>
+                <p th:text="${'Производитель:' + laptop.getVideocard().getManufacturer().getName()}"></p>
+                <p th:text="${'Модель: ' + laptop.getVideocard().getModelName()}"></p>
+                <p th:text="${'Тип видеопамяти:' + laptop.getVideocard().getMemoryType()}"></p>
+                <p th:text="${'Количество видеопамяти: ' + laptop.getVideocard().getMemorySize()}"></p>
+
+                <h5 class="container">Количство на складе</h5>
+                <p th:text="${laptop.getCountOnWarehouse() > 0 ? laptop.getCountOnWarehouse() : 'Нет в наличии'}"></p>
+
+
+                <a th:href="@{'/product/' + ${laptop.getId()}} + '/fav'" class="btn">♥</a>
+                <a th:if="${laptop.getCountOnWarehouse() > 0}" th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-primary">В корзину</a>
+            </div>
+            <br>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

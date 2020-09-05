@@ -34,27 +34,24 @@ public class OrderController  {
     private OrderService orderService;
 
     @GetMapping("/{number}")
-    public String redirectCart(@AuthenticationPrincipal User user, @PathVariable Order number, Model model) throws NullPointerException {
+    public String redirectCart(@AuthenticationPrincipal User user,
+                               @PathVariable Order number,
+                               Model model) throws NullPointerException {
+
         model.addAttribute("orders", number);
         return "redirect:/check";
     }
+
     @PostMapping("/make-order")
-    public String addOrder(@ModelAttribute(name = "userCart") Cart cart,
+    public String addOrder(
                            @RequestParam String knopka,
                            @AuthenticationPrincipal User user,
                            SessionStatus sessionStatus,
-                           WebRequest webRequest,
-                           Session.Cookie cookie,
                            HttpSession session) {
-        if (knopka.equals("deleteall")) {
-            sessionStatus.setComplete();
-
-            return "redirect:/check";
-        }
+        Cart cart = (Cart) session.getAttribute("userCart");
         orderService.createOrder(cart, user);
         session.removeAttribute("userCart");
         sessionStatus.setComplete();
-        session.removeAttribute("userCart");
         return "redirect:/main";
     }
 

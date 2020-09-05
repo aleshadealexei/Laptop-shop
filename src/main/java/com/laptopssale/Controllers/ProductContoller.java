@@ -2,8 +2,10 @@ package com.laptopssale.Controllers;
 
 import com.laptopssale.Entities.Feedback;
 import com.laptopssale.Entities.Laptop;
+import com.laptopssale.Entities.LaptopsFavList;
 import com.laptopssale.Entities.User;
 import com.laptopssale.Repositories.FeedbacksRepo;
+import com.laptopssale.Repositories.LaptopFavListRepo;
 import com.laptopssale.Repositories.LaptopRepo;
 import com.laptopssale.Repositories.UserRepo;
 import com.laptopssale.SessionAttributes.Cart;
@@ -27,6 +29,9 @@ public class ProductContoller {
 
     @Autowired
     private FeedbacksRepo feedbacksRepo;
+
+    @Autowired
+    private LaptopFavListRepo laptopFavListRepo;
 
     @Autowired
     private LaptopRepo laptopRepo;
@@ -53,6 +58,20 @@ public class ProductContoller {
             feedback.setUser(user);
             System.out.println(feedback.getUser().getUsername());
             feedbacksRepo.save(feedback);
+        }
+        return "redirect:/product/" + laptop.getId();
+    }
+
+    @GetMapping("/{id}/fav")
+    public String addAndRemoveFavList(@PathVariable(name = "id") Laptop laptop,
+                                      @AuthenticationPrincipal User user,
+                                      Model model) {
+        LaptopsFavList laptopsFavList = laptopFavListRepo.findAllByUserIdAndLaptopId(user.getId(), laptop.getId());
+        if (laptopsFavList == null) {
+            laptopsFavList = new LaptopsFavList(user, laptop) ;
+            laptopFavListRepo.save(laptopsFavList);
+        } else {
+            laptopFavListRepo.delete(laptopsFavList);
         }
         return "redirect:/product/" + laptop.getId();
     }

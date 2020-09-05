@@ -46,6 +46,7 @@
         <div class="card-body">
             <h5 class="card-title" th:text="${laptop.getDiagonal()+ ' '+ laptop.getManufacturer().getName() + ' '
                 + laptop.getProductName()}"></h5>
+            <h5 th:text="'Цена: ' + ${laptop.getPriceToSale()} + ' рублей'"></h5>
             <p class="card-text"
                th:text="${
                laptop.getProcessor().getManufacturer().getName() + ' '

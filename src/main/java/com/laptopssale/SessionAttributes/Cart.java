@@ -50,6 +50,7 @@ public class Cart {
         for (Laptop key: tovarList.keySet()) {
             if (key.getId() == laptop.getId()) {
                 tovarList.replace(key, tovarList.get(key) + 1);
+                sum += laptop.getPriceToSale();
                 return true;
             }
 

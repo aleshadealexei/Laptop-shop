@@ -9,14 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpCookie;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -42,7 +38,7 @@ public class MainController  {
                               Model model) {
 
         if (session.getAttribute("userCart") == null)
-            session.setAttribute("userCart", new Cart(session));
+            session.setAttribute("userCart", new Cart());
 
         session.setAttribute("whereRedirect", "main");
         Page<Laptop> laptopPage = laptopRepo.findAll(pageable);
@@ -56,31 +52,30 @@ public class MainController  {
                                   HttpSession session,
                                   @PathVariable Laptop id,
                                   Model model) {
-        if (id.getCountOnWarehouse() <= 0) {
-            return "redirect:/main";
-        }
+
         Cart cart;
         if (session.getAttribute("userCart") == null)
             session.setAttribute("userCart", new Cart(session));
         cart = (Cart) session.getAttribute("userCart");
+        for (Laptop l: cart.getTovarList().keySet()) {
+            if (l.getCountOnWarehouse() <= cart.getTovarList().get(l)) {
+                return "redirect:/check";
+            }
+        }
         if (!cart.hasOnCart(id)) {
             cart.getTovarList().put(id, 1);
+            cart.setSum(cart.getSum() + id.getPriceToSale());
         }
-        cart.setSum(cart.getSum() + id.getPriceToSale());
-        model.addAttribute("laptops", laptopRepo.findAll());
         session.setAttribute("userCart", cart);
-        if (session.getAttribute("whereRedirect").equals("check")) {
-            return "redirect:/check";
-        }
-        return "redirect:/main";
+
+        return "redirect:/check";
     }
 
     @GetMapping("/laptop/del-from-cart/{id}")
     public String delLaptopFromCart(HttpSession session, @PathVariable Laptop id, Model model) {
-        Cart cart;
+        Cart cart = (Cart) session.getAttribute("userCart");;
         if (session.getAttribute("userCart") == null) {
             session.setAttribute("userCart", new Cart());
-            cart = new Cart();
         } else {
             cart = (Cart) session.getAttribute("userCart");
         }
@@ -99,9 +94,9 @@ public class MainController  {
 
     @GetMapping("/check")
     public String checkCart(Model model, HttpSession session) {
-        session.setAttribute("whereRedirect", "check");
         if (session.getAttribute("userCart") == null)
-            session.setAttribute("userCart", new Cart(session));
+            session.setAttribute("userCart", new Cart());
+
         Cart cart = (Cart) session.getAttribute("userCart");
         model.addAttribute("cart", cart);
         return "second";

@@ -20,7 +20,9 @@
         <li class="nav-item">
             <a class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id} + '/settings'}">Настройки</a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{'/profile/' + ${#authentication.principal.id} + '/favlist'}">Избранное</a>
+        </li>
     </ul>
 
     <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id}">
@@ -105,34 +107,45 @@
         </form>
     </div>
     <div th:if="${#request.getRequestURI() == '/profile/' + #authentication.principal.id + '/favlist'}">
-        <h5>Избранное: </h5>
-        <div class="card container" th:each="laptop : ${user.getLaptops()}">
+        <h5 class="container">Избранное: </h5>
+        <div class="card container" th:each="l : ${laptops}">
             <div class="card-body" >
-                <h4 class="card-title"th:text="${laptop.getDiagonal() + ' '+ laptop.getFullProductName()}"></h4>
+                <h4 class="card-title"th:text="${l.getLaptop().getDiagonal() + ' '+ l.getLaptop().getFullProductName()}"></h4>
+                <h5 th:text="'Цена: ' + ${l.getLaptop().getPriceToSale()} + ' рублей'"></h5>
                 <h5 class="container">Размеры</h5>
-                <p th:text="${'Диагональ: ' + laptop.getDiagonal()}"></p>
-                <p th:text="${'Длина: ' + laptop.getLenght()}"></p>
-                <p th:text="${'Ширина: ' + laptop.getWidth()}"></p>
+                <p th:text="${'Диагональ: ' + l.getLaptop().getDiagonal()}"></p>
+                <p th:text="${'Длина: ' + l.getLaptop().getLenght()}"></p>
+                <p th:text="${'Ширина: ' + l.getLaptop().getWidth()}"></p>
 
                 <h5 class="container">Процессор</h5>
-                <p th:text="${'Производитель:' + laptop.getProcessor().getManufacturer().getName()}"></p>
-                <p th:text="${'Модель: ' + ' ' + laptop.getProcessor().getModelName()}"></p>
-                <p th:text="${'Количество ядер: ' + laptop.getProcessor().getNumberOfCores()}"></p>
-                <p th:text="${'Тактовая частота: ' + laptop.getProcessor().getRate() +  ' ГГц'}"></p>
+                <p th:text="${'Производитель:' + l.getLaptop().getProcessor().getManufacturer().getName()}"></p>
+                <p th:text="${'Модель: ' + ' ' + l.getLaptop().getProcessor().getModelName()}"></p>
+                <p th:text="${'Количество ядер: ' + l.getLaptop().getProcessor().getNumberOfCores()}"></p>
+                <p th:text="${'Тактовая частота: ' + l.getLaptop().getProcessor().getRate() +  ' ГГц'}"></p>
 
                 <h5 class="container">Видеокарта:</h5>
-                <p th:text="${'Производитель:' + laptop.getVideocard().getManufacturer().getName()}"></p>
-                <p th:text="${'Модель: ' + laptop.getVideocard().getModelName()}"></p>
-                <p th:text="${'Тип видеопамяти:' + laptop.getVideocard().getMemoryType()}"></p>
-                <p th:text="${'Количество видеопамяти: ' + laptop.getVideocard().getMemorySize()}"></p>
+                <p th:text="${'Производитель:' + l.getLaptop().getVideocard().getManufacturer().getName()}"></p>
+                <p th:text="${'Модель: ' + l.getLaptop().getVideocard().getModelName()}"></p>
+                <p th:text="${'Тип видеопамяти:' + l.getLaptop().getVideocard().getMemoryType()}"></p>
+                <p th:text="${'Количество видеопамяти: ' + l.getLaptop().getVideocard().getMemorySize()}"></p>
 
                 <h5 class="container">Количство на складе</h5>
-                <p th:text="${laptop.getCountOnWarehouse() > 0 ? laptop.getCountOnWarehouse() : 'Нет в наличии'}"></p>
+                <p th:text="${l.getLaptop().getCountOnWarehouse() > 0 ? l.getLaptop().getCountOnWarehouse() : 'Нет в наличии'}"></p>
 
 
-                <a th:href="@{'/product/' + ${laptop.getId()}} + '/fav'" class="btn">♥</a>
-                <a th:if="${laptop.getCountOnWarehouse() > 0}" th:href="@{'/laptop/add-to-cart/' + ${laptop.getId()}}" class="btn btn-primary">В корзину</a>
-            </div>
+                <p>
+                    <a th:href="@{'/product/' + ${l.getLaptop().getId()}} + '/fav'" class="btn btn-danger">Убрать</a>
+                    <br>
+                </p>
+
+                <p>
+                    <a th:href="@{'/product/' + ${l.getLaptop().getId()}}" class="btn btn-primary">Подробнее...</a>
+                </p>
+                <p>
+                    <a th:if="${l.getLaptop().getCountOnWarehouse() > 0}"
+                       th:href="@{'/laptop/add-to-cart/' + ${l.getLaptop().getId()}}"
+                       class="btn btn-primary">В корзину</a>
+                </p></div>
             <br>
         </div>
     </div>
